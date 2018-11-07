@@ -1,0 +1,3 @@
+language: node_js
+script: make lint
+node_js: 10

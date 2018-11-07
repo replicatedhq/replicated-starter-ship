@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{repl ConfigOption "namespace" }}
+  name: example-config
+data:
+    ENV_VAR_1: "fake"
+    ENV_VAR_2: "faker"

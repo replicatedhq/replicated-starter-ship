@@ -1,0 +1,97 @@
+assets:
+  v1:
+    - github:
+        repo: replicatedhq/replicated-starter-ship
+        path: /base
+        dest: ./
+        source: private
+        # can be a commit SHA or branch reference, but master is best for quick iteration
+        ref: master
+    - github:
+        repo: replicatedhq/replicated-starter-ship
+        path: /scripts
+        dest: ./
+        source: private
+        # can be a commit SHA or branch reference, but master is best for quick iteration
+        ref: master
+config:
+  v1:
+    - name: nginx
+      title: nginx settings
+      items:
+      - name: nginx_replicas
+        title: Nginx Replicas
+        type: text
+        default: 3
+      - name: nginx_memory
+        title: Nginx Memory
+        type: text
+        default: 100Mi
+
+    - name: kubernetes
+      title: Kubernetes
+      items:
+      - name: namespace
+        title: Namespace
+        type: text
+        # change to your app name
+        default: "my-cool-app"
+
+lifecycle:
+  v1:
+    # custom markdown messaging. Replace `My Cool App` with your app name
+    - message:
+        contents: |
+          # My Cool App Installer
+
+          This installer will walk you through setting up a scalable nginx pool for
+          `My Cool App` that will serve good web content.
+
+
+    # More placeholder messaging
+    - message:
+        contents: |
+          # Prerequisites
+
+          - 3 web servers
+          - 2 SSL certs
+          - 1 Kubernetes cluster
+
+    # collect info according to the `config.v1` section, above
+    - config:
+        invalidates: ["render"]
+    # render assets
+    - render:
+        requires: ["config"]
+        root: .
+    - message:
+        contents: |
+          # Customize your Kubernetes configs
+
+          Base kubernetes assets have been generated for deploying `My Cool App` to your kubernetes cluster.
+
+          The next step will walk you through adding any last-mile customizations to kubernetes configurations
+          before deploying them to your cluster.
+
+          This will give you an opportunity to customize default configuration values,
+          and add any additional kubernetes settings in a way that will preserve your
+          customizations when pulling in upstream updates for `My Cool App`
+
+          We recommend reviewing the kubernetes resources and making any tweaks to the defaults,
+          especially to `config.yaml`.
+
+    - kustomizeIntro: {}
+    - kustomize:
+        requires: ["render"]
+        base: ./base
+        overlay: overlays/ship
+        dest: rendered.yaml
+    - message:
+        id: outro
+        contents: |
+          ## You're all set!
+
+          If you have `kubectl` configured locally, you can deploy `My Cool App` by running
+
+              kubectl apply -f rendered.yaml
+

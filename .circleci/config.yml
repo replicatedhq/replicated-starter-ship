@@ -1,0 +1,24 @@
+version: 2
+jobs:
+  lint:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:8.7
+    steps:
+      - checkout
+      - run:
+          name: lint
+          command: make lint lint_reporter=junit
+      - run:
+          name: prepare test results
+          command: |
+              mkdir -p test-results/replicated-lint
+              mv test-results/replicated-lint-results.xml test-results/replicated-lint/replicated-lint-results.xml
+      - store_test_results:
+          path:  test-results
+
+workflows:
+  version: 2
+  lint:
+    jobs:
+      - lint
