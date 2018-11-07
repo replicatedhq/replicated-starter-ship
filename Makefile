@@ -23,8 +23,7 @@ lint: deps
 	`npm bin`/replicated-lint validate --project replicatedShip -f ship.yaml --reporter $(lint_reporter)
 
 run-local: clean-assets lint
-	mkdir -p tmp
-	cd tmp && \
+	mkdir -p tmp && cd tmp && \
 	$(SHIP) app \
 	    --runbook $(PATH)/ship.yaml  \
 	    --set-github-contents $(REPO):/base:master:$(PATH) \
@@ -35,8 +34,7 @@ run-local: clean-assets lint
 	@$(MAKE) print-generated-assets
 
 run-local-headless: clean-assets lint
-	mkdir -p tmp
-	cd tmp && \
+	mkdir -p tmp && cd tmp && \
 	$(SHIP) app \
 	    --runbook $(PATH)/ship.yaml  \
 	    --set-github-contents $(REPO):/base:master:$(PATH) \
