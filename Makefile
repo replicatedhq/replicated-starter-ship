@@ -20,7 +20,7 @@ deps:
 	npm install replicated-lint
 
 lint:
-	`~/bin/npm bin`/replicated-lint validate --project replicatedShip -f ship.yaml --reporter $(lint_reporter)
+	`npm bin`/replicated-lint validate --project replicatedShip -f ship.yaml --reporter $(lint_reporter)
 
 run-local: clean-assets lint
 	mkdir -p tmp
