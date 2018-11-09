@@ -29,7 +29,7 @@ First, clone the repo and re-initialize it
 ```
 export MY_APP_NAME=my-cool-app
 
-git clone github.com/replicatedhq/replicated-starter-ship.git ${MY_APP_NAME}
+git clone https://github.com/replicatedhq/replicated-starter-ship.git ${MY_APP_NAME}
 cd ${MY_APP_NAME}
 rm -rf .git
 git init
