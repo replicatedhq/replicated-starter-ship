@@ -14,19 +14,63 @@ assets:
         source: private
         # can be a commit SHA or branch reference, but master is best for quick iteration
         ref: master
+
+    - inline:
+        dest: tf/empty.tf
+        contents: |
+          #an empty terraform file
+
+    - google_gke:
+        when: '{{repl and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") (ConfigOptionEquals "provision_k8s" "provision_k8s_gcp")}}'
+        dest: tf/gke.tf
+        credentials: '{{repl ConfigOption "credentials" | Base64Encode}}'
+        project: '{{repl ConfigOption "gcp_project" }}'
+        region: '{{repl ConfigOption "gcp_region" }}'
+        # change to your app name
+        cluster_name: 'my-cool-app'
+        zone: '{{repl ConfigOption "gcp_zone" }}'
+        initial_node_count: '{{repl ConfigOption "gcp_cluster_size" }}'
+        machine_type: '{{repl ConfigOption "gcp_machine_type" }}'
+
+    # NOTE this will not work for "docker run", but will work for the brew-installed ship, provided AWS creds are already configured in ~/.aws
+    - amazon_eks:
+        when: '{{repl and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") (ConfigOptionEquals "provision_k8s" "provision_k8s_aws")}}'
+        dest: tf/eks.tf
+        # change to your app name
+        cluster_name: "my-cool-app"
+        region: "us-west-2"
+        created_vpc:
+          vpc_cidr: "10.0.0.0/16"
+          zones:
+            - us-west-2a
+            - us-west-2b
+          public_subnets:
+            - "10.0.1.0/24"
+            - "10.0.2.0/24"
+          private_subnets:
+            - "10.0.129.0/24"
+            - "10.0.130.0/24"
+        autoscaling_groups:
+          - name: alpha
+            group_size: "3"
+            machine_type: t2.meduim
+
+    - azure_aks:
+        when: '{{repl and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") (ConfigOptionEquals "provision_k8s" "provision_k8s_azure")}}'
+        tenant_id: '{{repl ConfigOption "azure_tenant_id" }}'
+        subscription_id: '{{repl ConfigOption "azure_subscription_id" }}'
+        service_principal_id: '{{repl ConfigOption "azure_service_principal_id" }}'
+        service_principal_secret: '{{repl ConfigOption "azure_service_principal_secret" }}'
+        resource_group_name: '{{repl ConfigOption "azure_resource_group_name" }}'
+        location: '{{repl ConfigOption "azure_location" }}'
+        # change to your app name
+        cluster_name: "my-cool-app"
+        kubernetes_version: "1.11.2"
+        node_count: "1"
+        node_type: "Standard_D1_v2"
+
 config:
   v1:
-    - name: nginx
-      title: nginx settings
-      items:
-      - name: nginx_replicas
-        title: Nginx Replicas
-        type: text
-        default: 3
-      - name: nginx_memory
-        title: Nginx Memory
-        type: text
-        default: 100Mi
 
     - name: kubernetes
       title: Kubernetes
@@ -36,6 +80,110 @@ config:
         type: text
         # change to your app name
         default: "default"
+
+    - name: k8s_target
+      title: Kubernetes Deployment Target
+      description: Select the Kubernetes deployment option you prefer
+      items:
+        - name: k8s_target_value
+          type: select_one
+          default: "k8s_target_existing"
+          items:
+            - name: k8s_target_existing
+              title: Existing Cluster
+              value: k8s_target_existing
+            - name: k8s_target_provision_k8s
+              title: Provision a cluster in my cloud provider
+              value: k8s_target_provision_k8s
+
+        - name: provision_k8s
+          type: select_one
+          when: '{{repl ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s"}}'
+          default: "provision_k8s_aws"
+          items:
+            - name: provision_k8s_aws
+              title: AWS EKS
+            - name: provision_k8s_azure
+              title: Azure AKS
+            - name: provision_k8s_gcp
+              title: GCP GKE
+
+    - name: k8s_target_aws
+      title: AWS Settings
+      description: AWS Settings
+      when: '{{repl and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") (ConfigOptionEquals "provision_k8s" "provision_k8s_aws")}}'
+      items:
+        - name: aws_access_key_id
+          title: AWS Access Key ID
+          type: text
+          value: "please configure this in ~/.aws"
+          readonly: true
+        - name: aws_access_secret_access_key
+          title: AWS Secret access key
+          type: text
+          value: "please configure this in ~/.aws"
+          readonly: true
+    - name: k8s_target_azure
+      title: Azure Settings
+      description: Azure Settings
+      when: '{{repl and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") (ConfigOptionEquals "provision_k8s" "provision_k8s_azure")}}'
+      items:
+        - name: azure_tenant_id
+          title: Tenant ID
+          type: text
+        - name: azure_subscription_id
+          title: Subscription ID
+          type: text
+        - name: azure_service_principal_id
+          title: Service Principal ID
+          type: text
+        - name: azure_service_principal_secret
+          title: Service Principal Secret
+          type: password
+        - name: azure_resource_group_name
+          title: Resource Group
+          type: text
+        - name: azure_location
+          title: Resource Group Location
+    - name: k8s_target_gcp
+      title: GCP Settings
+      description: Azure Settings
+      when: '{{repl and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") (ConfigOptionEquals "provision_k8s" "provision_k8s_gcp")}}'
+      items:
+        - name: gcp_project
+          title: GCP Project Name
+          type: text
+        - name: gcp_region
+          title: GCP Region Name
+          type: text
+          default: us-central1
+        - name: gcp_zone
+          title: GCP Region Name
+          type: text
+          default: us-central1-b
+        - name: gcp_machine_type
+          title: GCP Machine type
+          type: text
+          default: n1-standard-1
+        - name: gcp_cluster_size
+          title: GCP cluster size
+          type: text
+          default: 3
+        - name: gcp_account_json
+          title: GCP IAM Key (account.json)
+          type: textarea
+
+    - name: nginx
+      title: nginx settings
+      items:
+        - name: nginx_replicas
+          title: NGINX Replicas
+          type: text
+          default: 3
+        - name: nginx_memory
+          title: Nginx Memory
+          type: text
+          default: 100Mi
 
 lifecycle:
   v1:
@@ -86,6 +234,11 @@ lifecycle:
         base: ./base
         overlay: overlays/ship
         dest: rendered.yaml
+    - terraform:
+        path: tf/
+    - kubectlApply:
+        path: rendered.yaml
+        kubeconfig: '{{repl GoogleGKE "auditlog"}}'
     - message:
         id: outro
         contents: |
