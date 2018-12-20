@@ -89,3 +89,12 @@ Both configs will lint your `ship.yaml` for syntax and logic errors. You can use
 ### License
 
 MIT
+
+
+## Troubleshooting
+
+#### `make run-local` fails with `github asset returned no files`
+
+1. Double check the `assets.v1.github` entries in your ship.yaml match the `--set-github-contents` flags in your `Makefile`.
+
+2. Note that the `make run-local` and `make run-local-headless` tasks don't handle symlinks well. If you have symlinks in your repo, or you've symlinked the repo root, this can cause issues. To determine if this is the cause, you can temporarily replace symlinks with the content they point to.
