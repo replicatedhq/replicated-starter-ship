@@ -7,7 +7,7 @@ Starter project for managing a [Ship](https://ship.replicated.com) application i
 
 - `make`
 - `node`
-- `ship` installed. On macOS, you can use `brew tap replicatedhq/ship && brew install ship` to install with Homebrew
+- `ship` installed. On macOS, you can use `brew install ship` to install with Homebrew
 - A GitHub repository created to store your Ship application assets.
 
 **Note:** While Ship supports any git repository, this example leverages features that are GitHub-only (for now). The repo you create can be private or public.
