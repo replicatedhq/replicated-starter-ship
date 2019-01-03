@@ -17,9 +17,9 @@ install-ship:
 	brew install ship
 
 deps:
-	npm install replicated-lint
+	@[ -x `npm bin`/replicated-lint ] || npm install --no-save replicated-lint
 
-lint:
+lint: deps
 	`npm bin`/replicated-lint validate --project replicatedShip -f ship.yaml --reporter $(lint_reporter)
 
 run-local: clean-assets lint

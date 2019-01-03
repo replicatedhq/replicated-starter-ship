@@ -20,7 +20,7 @@ This project contains an example application that can be deployed with ship. The
 - `scripts` -- Shell scripts to be distributed with the application, primarily for testing and troubleshooting the application
 - `ship.yaml` -- ties these pieces together into a deployable application
 - `Makefile` -- Workflows for testing the application installation experience
-- [CI integration](#integrating-with-ci) starters for testing changes to your application.
+- [CI integration](#integrate-with-ci) starters for testing changes to your application.
 
 ### Get started
 
@@ -45,7 +45,6 @@ To get started, you'll want to update the following fields in `Makefile` and `sh
 
 You can test this out by launching ship with
 
-    make deps
     make run-local
 
 This will open a browser and walk you through configuring the application defined in `ship.yaml`. The test application creates a small Kubernetes Deployment to run Nginx, but it's a good way to get a sense of how ship works.
