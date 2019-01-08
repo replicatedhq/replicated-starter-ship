@@ -27,7 +27,7 @@ assets:
         project: '{{repl ConfigOption "gcp_project" }}'
         region: '{{repl ConfigOption "gcp_region" }}'
         # change to your app name
-        cluster_name: 'my-cool-app'
+        cluster_name: '{{repl ConfigOption "gcp_cluster_name"}}'
         zone: '{{repl ConfigOption "gcp_zone" }}'
         initial_node_count: '{{repl ConfigOption "gcp_cluster_size" }}'
         machine_type: '{{repl ConfigOption "gcp_machine_type" }}'
@@ -169,6 +169,10 @@ config:
           title: GCP cluster size
           type: text
           default: 3
+        - name: gcp_cluster_name
+          title: Cluster Name
+          type: text
+          default: my-cool-app
         - name: gcp_account_json
           title: GCP IAM Key (account.json)
           type: textarea
@@ -244,7 +248,23 @@ lifecycle:
         contents: |
           ## You're all set!
 
+          {{repl if (and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") (ConfigOptionEquals "provision_k8s" "provision_k8s_gcp"))}}
+          Your cluster is live -- if you have `gcloud` configured, you can run
+
+              gcloud container clusters get-credentials {{repl ConfigOption "gcp_cluster_name"}} --zone {{repl ConfigOption "gcp_zone"}} --project {{repl ConfigOption "gcp_project"}}
+
+          to configure kubectl on this machine. Then run
+
+              kubectl get svc example-nginx
+
+          to get the external IP of the service. Note that it might take a minute or two for the IP address to be provisioned.
+
+          {{repl end}}
+
+          {{repl if (ConfigOptionEquals "k8s_target_value" "k8s_target_existing")}}
+
           If you have `kubectl` configured locally, you can deploy `My Cool App` by running
 
               kubectl apply -f rendered.yaml
+          {{repl end}}
 
