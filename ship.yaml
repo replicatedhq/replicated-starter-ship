@@ -35,7 +35,7 @@ config:
         title: Namespace
         type: text
         # change to your app name
-        default: "my-cool-app"
+        default: "default"
 
 lifecycle:
   v1:
