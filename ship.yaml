@@ -242,7 +242,7 @@ lifecycle:
         path: tf/
     - kubectlApply:
         path: base/
-        kubeconfig: '{{repl GoogleGKE "my-cool-app"}}'
+        kubeconfig: '{{repl GoogleGKE (ConfigOption "gcp_cluster_name")}}'
     - message:
         id: outro
         contents: |
