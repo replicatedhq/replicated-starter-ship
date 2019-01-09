@@ -241,7 +241,7 @@ lifecycle:
     - terraform:
         path: tf/
     - kubectlApply:
-        path: rendered.yaml
+        path: base/
         kubeconfig: '{{repl GoogleGKE "my-cool-app"}}'
     - message:
         id: outro
