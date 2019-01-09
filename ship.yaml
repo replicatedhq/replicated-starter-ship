@@ -223,13 +223,19 @@ lifecycle:
     - message:
         id: tf-intro
         contents: |
-          {{repl if (and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") }}
           ## Provisioning Infrastructure
+          {{repl if (and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") }}
 
           Next, we'll provision your cluster with terraform. Terraform sources have been output at `./tf`. The next step will use these to provision a Kubernetes cluster in your cloud provider.
 
           If you'd prefer to apply these yourself, you can click `Skip` on the next page.
 
+          {{repl end}}
+          {{repl if (ConfigOptionEquals "k8s_target_value" "k8s_target_existing")}}
+
+          You've elected not to provision any infrastructure, so the next few steps can be skipped!
+
+          If you don't already have a Kubernetes cluster to deploy to, you can go back to the [config](/config) step to provide cloud provider credentials so this installer can provision a cluster.
           {{repl end}}
 
     - terraform:
