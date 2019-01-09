@@ -5,6 +5,7 @@ assets:
         path: /base
         dest: ./
         source: private
+        proxy: true
         # can be a commit SHA or branch reference, but master is best for quick iteration
         ref: master
     - github:
@@ -14,6 +15,7 @@ assets:
         source: private
         # can be a commit SHA or branch reference, but master is best for quick iteration
         ref: master
+        proxy: true
 
     - inline:
         dest: tf/empty.tf
