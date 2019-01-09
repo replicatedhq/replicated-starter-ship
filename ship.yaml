@@ -205,9 +205,13 @@ lifecycle:
         contents: |
           # Prerequisites
 
-          - 3 web servers
-          - 2 SSL certs
-          - 1 Kubernetes cluster
+          To install `My Cool App`, you'll need to have either
+
+          - An existing Kubernetes cluster
+
+          or
+
+          - A service account / API credentials for your cloud provider. AWS, GCP, and Azure are supported
 
     # collect info according to the `config.v1` section, above
     - config:
@@ -217,32 +221,22 @@ lifecycle:
         requires: ["config"]
         root: .
     - message:
+        id: tf-intro
         contents: |
-          # Customize your Kubernetes configs
+          {{repl if (and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") }}
+          ## Provisioning Infrastructure
 
-          Base kubernetes assets have been generated for deploying `My Cool App` to your kubernetes cluster.
+          Next, we'll provision your cluster with terraform. Terraform sources have been output at `./tf`. The next step will use these to provision a Kubernetes cluster in your cloud provider.
 
-          The next step will walk you through adding any last-mile customizations to kubernetes configurations
-          before deploying them to your cluster.
+          If you'd prefer to apply these yourself, you can click `Skip` on the next page.
 
-          This will give you an opportunity to customize default configuration values,
-          and add any additional kubernetes settings in a way that will preserve your
-          customizations when pulling in upstream updates for `My Cool App`
+          {{repl end}}
 
-          We recommend reviewing the kubernetes resources and making any tweaks to the defaults,
-          especially to `config.yaml`.
-
-    - kustomizeIntro: {}
-    - kustomize:
-        requires: ["render"]
-        base: ./base
-        overlay: overlays/ship
-        dest: rendered.yaml
     - terraform:
         path: tf/
     - kubectlApply:
         path: rendered.yaml
-        kubeconfig: '{{repl GoogleGKE "auditlog"}}'
+        kubeconfig: '{{repl GoogleGKE "my-cool-app"}}'
     - message:
         id: outro
         contents: |
