@@ -224,7 +224,7 @@ lifecycle:
         id: tf-intro
         contents: |
           ## Provisioning Infrastructure
-          {{repl if (and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") }}
+          {{repl if (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") }}
 
           Next, we'll provision your cluster with terraform. Terraform sources have been output at `./tf`. The next step will use these to provision a Kubernetes cluster in your cloud provider.
 
