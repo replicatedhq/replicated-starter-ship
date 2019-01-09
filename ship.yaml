@@ -240,6 +240,16 @@ lifecycle:
 
     - terraform:
         path: tf/
+    - message:
+        id: kubectl-apply
+        contents: |
+          {{repl if (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") }}
+
+          Now that your cluster is provisioned, we'll deploy resources with the generated kubeconfig at {{repl GoogleGKE (ConfigOption "gcp_cluster_name")}}
+
+          {{repl else}}
+          Nothing to see here
+          {{repl end}}
     - kubectlApply:
         path: base/
         kubeconfig: '{{repl GoogleGKE (ConfigOption "gcp_cluster_name")}}'
