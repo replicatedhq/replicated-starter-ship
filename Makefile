@@ -1,6 +1,5 @@
 .PHONY: install-ship run-local run-local-headless lint clean-assets print-generated-assets deploy deps
 SHIP := $(shell which ship)
-SHIP := $(shell which ship)
 PATH := $(shell pwd)
 SHELL := /bin/bash -lo pipefail
 lint_reporter := console
@@ -14,7 +13,6 @@ ICON := "https://vendor.replicated.com/011a5f1125bce80a8ced6fae0c409c91.png"
 
 
 install-ship:
-	brew tap replicatedhq/ship
 	brew install ship
 
 deps:
@@ -33,6 +31,7 @@ run-local: clean-assets lint
 	    --set-channel-name $(APP_NAME) \
 	    --log-level=off
 	@$(MAKE) print-generated-assets
+
 
 run-local-headless: clean-assets lint
 	mkdir -p tmp && cd tmp && \

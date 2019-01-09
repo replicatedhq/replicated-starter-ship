@@ -23,7 +23,7 @@ assets:
     - google_gke:
         when: '{{repl and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") (ConfigOptionEquals "provision_k8s" "provision_k8s_gcp")}}'
         dest: tf/gke.tf
-        credentials: '{{repl ConfigOption "credentials" | Base64Encode}}'
+        credentials: '{{repl ConfigOption "gcp_account_json" | Base64Encode}}'
         project: '{{repl ConfigOption "gcp_project" }}'
         region: '{{repl ConfigOption "gcp_region" }}'
         # change to your app name
@@ -32,7 +32,7 @@ assets:
         initial_node_count: '{{repl ConfigOption "gcp_cluster_size" }}'
         machine_type: '{{repl ConfigOption "gcp_machine_type" }}'
 
-    # NOTE this will not work for "docker run", but will work for the brew-installed ship, provided AWS creds are already configured in ~/.aws
+    # NOTE when running this with `docker run`, the ~/.aws/ folder will need to be mounted into the container, and the `full` tag should be used instead of `latest`
     - amazon_eks:
         when: '{{repl and (ConfigOptionEquals "k8s_target_value" "k8s_target_provision_k8s") (ConfigOptionEquals "provision_k8s" "provision_k8s_aws")}}'
         dest: tf/eks.tf
