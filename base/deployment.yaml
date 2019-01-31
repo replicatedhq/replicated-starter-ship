@@ -1,13 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{repl ConfigOption "namespace"}}
   name: example-nginx
   labels:
     app: example
     component: nginx
 spec:
-  replicas: {{repl ConfigOption "nginx_replicas" }}
+  replicas: 1
   selector:
     matchLabels:
       app: example

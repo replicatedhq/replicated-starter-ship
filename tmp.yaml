@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: example
+    component: nginx
+  name: example-nginx
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: example
+    component: nginx
+  type: LoadBalancer
+---
+# kind: scheduler-kubernetes
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: example
+    component: nginx
+  name: example-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example
+      component: nginx
+  template:
+    metadata:
+      labels:
+        app: example
+        component: nginx
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: example-config
+        image: nginx
+        name: nginx
+        resources:
+          limits:
+            cpu: 500m
+            memory: '{{repl ConfigOption "nginx_memory"}}'
