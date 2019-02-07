@@ -62,4 +62,4 @@ print-generated-assets:
 	@echo  └────────────────────┘
 	@echo
 	@sleep .5
-	@ls tmp/*
+	@find tmp -maxdepth 3 -type file
