@@ -66,6 +66,18 @@ run-local-headless: clean-assets lint-ship
 	    --log-level=error
 	@$(MAKE) print-generated-assets
 
+release-appliance: clean-assets lint-appliance deps-vendor-cli
+	kustomize build overlays/appliance | awk '/---/{print;print "# kind: scheduler-kubernetes";next}1' > tmp/k8s.yaml
+	cat replicated.yaml tmp/k8s.yaml | deps/replicated release create --promote $(APPLIANCE_CHANNEL) --yaml -
+
+release-ship: clean-assets lint-ship deps-vendor-cli
+	@deps/replicated shiprelease create \
+	    --vendor-token ${REPLICATED_API_TOKEN} \
+	    --channel-id $(SHIP_CHANNEL_ID) \
+	    --spec-file ./ship.yaml \
+	    --semver $(SHIP_SEMVER_SNAPSHOT) \
+	    --release-notes $(RELEASE_NOTES)
+
 deploy-ship:
 	@echo
 	@echo  ┌─────────────┐
@@ -86,16 +98,4 @@ print-generated-assets:
 	@echo
 	@sleep .5
 	@find tmp -maxdepth 3 -type file
-
-release-appliance: clean-assets lint-appliance deps-vendor-cli
-	kustomize build overlays/appliance | awk '/---/{print;print "# kind: scheduler-kubernetes";next}1' > tmp/k8s.yaml
-	cat replicated.yaml tmp/k8s.yaml | deps/replicated release create --promote $(APPLIANCE_CHANNEL) --yaml -
-
-release-ship: clean-assets lint-ship deps-vendor-cli
-	@deps/replicated shiprelease create \
-	    --vendor-token ${REPLICATED_API_TOKEN} \
-	    --channel-id $(SHIP_CHANNEL_ID) \
-	    --spec-file ./ship.yaml \
-	    --semver $(SHIP_SEMVER_SNAPSHOT) \
-	    --release-notes $(RELEASE_NOTES)
 

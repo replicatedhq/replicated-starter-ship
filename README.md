@@ -1,6 +1,5 @@
 Replicated Ship Starter
 ==================
-
 Starter project for managing a [Ship](https://ship.replicated.com) application in a GitHub repo.
 
 ### Prequisites
@@ -51,7 +50,7 @@ This will open a browser and walk you through configuring the application define
 
 You can inspect the YAML at `tmp/rendered.yaml`, and deploy the app using kubectl by running
 
-    make deploy
+    make deploy-ship
 
 or
 
@@ -81,6 +80,18 @@ To create a release of a [Replicated Embedded Kubernetes](https://help.replicate
 1. Export your `REPLICATED_APP` and `REPLICATED_CHANNEL_ID` as described in [the kubernetes starter project](https://github.com/replicatedhq/replicated-starter-kubernetes#configure-environment)
 2. Collect the channel ID for your unstable Ship channel from vendor.replicated.com and set it in the Makefile under `SHIP_UNSTABLE_CHANNEL_ID`.
 
+Then, you can create appliance releases with
+
+```sh
+make release-appliance
+```
+
+and create ship releases with
+
+```
+make release-ship
+```
+
 
 ### Integrate with CI
 
@@ -88,6 +99,14 @@ The project includes CI configs for [Travis CI](https://travis-ci.org) and [Circ
 
 Both configs will lint your `ship.yaml` and `replicated.yaml` for syntax and logic errors. Once a PR is merged to master, a release will be promoted to the channels designated in your Makefile.
 
+#### Note about appliance
+
+While the Makefile includes a task for `release-appliance`, this is still very much a ship-focused starter project. The correct workflow for delivering the same Kubernetes manifests to both Ship and Appliance apps will depend greatly on how your team ships code. An example workflow is shown below.
+
+
+![](./img/workflow.png)
+
+This example assumes you use an automated process to update YAMLs and image tags in a separate, centralized infrastructure repo. Depending on your scale and your process, its possible that your team will instead keep this repository up to date manually.
 
 ### Tools reference
 
