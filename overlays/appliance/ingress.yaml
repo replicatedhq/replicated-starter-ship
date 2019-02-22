@@ -1,0 +1,9 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: echoheaders-ingress
+spec:
+  backend:
+    serviceName: echoheaders
+    servicePort: 8080

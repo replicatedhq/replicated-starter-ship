@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{repl ConfigOption "namespace"}}
   name: support-bundle
   labels:
     app: example

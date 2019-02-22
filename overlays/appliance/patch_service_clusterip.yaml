@@ -6,7 +6,7 @@ metadata:
     app: example
     component: nginx
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - port: 80
   selector:

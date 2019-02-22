@@ -1,0 +1,8 @@
+bases:
+  - ../../base
+
+patches:
+  - patch_service_clusterip.yaml
+
+resources:
+  - ingress.yaml
