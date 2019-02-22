@@ -74,11 +74,20 @@ to regenerate assets. State will be stored in `tmp/.ship/state.json` between run
 
     make run-local-headless deploy
 
+### Create releases
+
+To create a release of an [Replicated Embedded Kubernetes](https://help.replicated.com/guides/ship-with-kubernetes) or [Ship](https://help.replicated.com/guides/kubernetes-with-ship) app to vendor.replicated.com, you'll need to configure a few additional fields.
+
+1. Export your `REPLICATED_APP` and `REPLICATED_CHANNEL_ID` as described in [the kubernetes starter project](https://github.com/replicatedhq/replicated-starter-kubernetes#configure-environment)
+2. Collect the channel ID for your unstable Ship channel from vendor.replicated.com and set it in the Makefile under `SHIP_UNSTABLE_CHANNEL_ID`.
+
+
 ### Integrate with CI
 
 The project includes CI configs for [Travis CI](https://travis-ci.org) and [CircleCI](https://circleci.com).
 
-Both configs will lint your `ship.yaml` for syntax and logic errors. You can use the [Ship Console](https://console.replicated.com/ship) to update and promote new releases as changes are made to your YAML in this repository.
+Both configs will lint your `ship.yaml` and `replicated.yaml` for syntax and logic errors. Once a PR is merged to master, a release will be promoted to the channels designated in your Makefile.
+
 
 ### Tools reference
 

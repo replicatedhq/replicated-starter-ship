@@ -17,8 +17,30 @@ jobs:
       - store_test_results:
           path:  test-results
 
+  release_ship:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:8.7
+    steps:
+      - checkout
+      - run: make release-ship
+
+  release_appliance:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:8.7
+    steps:
+      - checkout
+      - run: make release-appliance
+
 workflows:
   version: 2
   lint:
     jobs:
       - lint
+      - release_ship:
+        requires:
+          - lint
+      - release_appliance:
+        requires:
+          - lint
