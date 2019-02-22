@@ -41,6 +41,12 @@ workflows:
       - release_ship:
         requires:
           - lint
+        filters:
+          branches:
+            only: master
       - release_appliance:
         requires:
           - lint
+        filters:
+          branches:
+            only: master
