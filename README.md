@@ -101,12 +101,19 @@ Both configs will lint your `ship.yaml` and `replicated.yaml` for syntax and log
 
 #### Note about appliance
 
-While the Makefile includes a task for `release-appliance`, this is still very much a ship-focused starter project. The optimal workflow for delivering the same Kubernetes manifests to both Ship and Appliance apps will depend greatly on how your team ships code. An example workflow is shown below.
+While the Makefile includes a task for `release-appliance`, this is still very much a ship-focused starter project.
 
+#### Example workflows
+
+The optimal workflow for delivering the same Kubernetes manifests to both Ship and Appliance apps will depend greatly on how your team ships code. An example workflow is shown below.
+
+
+![](./img/workflow-simple.png)
+
+
+**Note**: This example asumes you'll be updating your kubernetes manifests in this ship repo manually. Depending on your scale and your process, its possible that your team will instead keep this infrastructure repository up to date automatically. For example, if you have many service repos, you may have core CI jobs for each service push updates to Kubernetes Manifests and image tags in this infrastructure repo as part of your delivery process
 
 ![](./img/workflow.png)
-
-This example assumes you use an automated process to update YAMLs and image tags in a separate, centralized infrastructure repo. Depending on your scale and your process, its possible that your team will instead keep this repository up to date manually.
 
 ### Tools reference
 
