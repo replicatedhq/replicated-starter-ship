@@ -76,7 +76,7 @@ to regenerate assets. State will be stored in `tmp/.ship/state.json` between run
 
 ### Create releases
 
-To create a release of an [Replicated Embedded Kubernetes](https://help.replicated.com/guides/ship-with-kubernetes) or [Ship](https://help.replicated.com/guides/kubernetes-with-ship) app to vendor.replicated.com, you'll need to configure a few additional fields.
+To create a release of a [Replicated Embedded Kubernetes](https://help.replicated.com/guides/ship-with-kubernetes) or [Ship](https://help.replicated.com/guides/kubernetes-with-ship) app to vendor.replicated.com, you'll need to configure a few additional fields.
 
 1. Export your `REPLICATED_APP` and `REPLICATED_CHANNEL_ID` as described in [the kubernetes starter project](https://github.com/replicatedhq/replicated-starter-kubernetes#configure-environment)
 2. Collect the channel ID for your unstable Ship channel from vendor.replicated.com and set it in the Makefile under `SHIP_UNSTABLE_CHANNEL_ID`.
