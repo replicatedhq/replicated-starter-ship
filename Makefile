@@ -1,7 +1,7 @@
 .PHONY: install-ship run-local run-local-headless lint clean-assets print-generated-assets deploy deps-lint
 SHIP := $(shell which ship)
 PATH := $(shell pwd)
-SHELL := /bin/bash -lo pipefail
+SHELL := /bin/bash -o pipefail
 
 RELEASE_NOTES := "Automated release on $(shell date)"
 lint_reporter := console
