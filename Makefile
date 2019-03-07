@@ -23,7 +23,7 @@ install-ship:
 	brew tap replicatedhq/ship
 	brew install ship
 
-depslint:
+deps-lint:
 	@[ -x `npm bin`/replicated-lint ] || npm install --no-save replicated-lint
 
 deps-vendor-cli:
