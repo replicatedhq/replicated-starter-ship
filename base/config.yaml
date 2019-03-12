@@ -5,3 +5,4 @@ metadata:
 data:
     ENV_VAR_1: "fake"
     ENV_VAR_2: "faker"
+    NUM_SEATS: '{{repl EntitlementValue "num_seats"}}'

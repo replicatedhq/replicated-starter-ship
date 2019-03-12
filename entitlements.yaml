@@ -1,0 +1,8 @@
+---
+- name: My Field
+  key: num_seats
+  description: Number of Seats
+  type: string
+  default: "10"
+  labels:
+    - owner=somePerson

@@ -108,12 +108,12 @@ While the Makefile includes a task for `release-appliance`, this is still very m
 The optimal workflow for delivering the same Kubernetes manifests to both Ship and Appliance apps will depend greatly on how your team ships code. An example workflow is shown below.
 
 
-![](./img/workflow-simple.png)
+![](./doc/workflow-simple.png)
 
 
 **Note**: This example asumes you'll be updating your kubernetes manifests in this ship repo manually. Depending on your scale and your process, its possible that your team will instead keep this infrastructure repository up to date automatically. For example, if you have many service repos, you may have core CI jobs for each service push updates to Kubernetes Manifests and image tags in this infrastructure repo as part of your delivery process
 
-![](./img/workflow.png)
+![](./doc/workflow.png)
 
 ### Tools reference
 

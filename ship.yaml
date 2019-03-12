@@ -34,7 +34,7 @@ config:
       - name: namespace
         title: Namespace
         type: text
-        # change to your app name
+        # change to your app nam    e
         default: "default"
 
 lifecycle:
