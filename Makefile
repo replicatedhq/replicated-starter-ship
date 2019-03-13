@@ -7,7 +7,7 @@ lint_reporter := console
 
 APPLIANCE_CHANNEL := Unstable
 
-SHIP_NIGHTLY_CHANNEL_ID := CHANGEME
+SHIP_CHANNEL_ID := CHANGEME
 
 # ship supports ignoring semver so we can probably remove this once that flag is added to CLI. This works fine for now
 SHIP_SEMVER_SNAPSHOT := 0.1.0-SNAPSHOT
