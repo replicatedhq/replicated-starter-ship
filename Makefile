@@ -6,10 +6,10 @@ RELEASE_NOTES := "Automated release on $(shell date)"
 lint_reporter := console
 
 APPLIANCE_CHANNEL := Unstable
-SHIP_CHANNEL_ID := Nightly
+SHIP_CHANNEL := Nightly
 
-# ship supports ignoring semver so we can probably remove this once that flag is added to CLI. This works fine for now
-SHIP_SEMVER_SNAPSHOT := 0.1.0-SNAPSHOT
+# ship supports ignoring semver rules so we can probably remove this once that flag is added to CLI. This works fine for now
+SHIP_SEMVER_SNAPSHOT := 0.1.0-dev
 
 # Replace this with your private or public ship repo in github
 REPO := replicatedhq/replicated-starter-ship
@@ -66,12 +66,16 @@ run-local-headless: clean-assets lint-ship
 
 release-appliance: clean-assets lint-appliance deps-vendor-cli
 	kustomize build overlays/appliance | awk '/---/{print;print "# kind: scheduler-kubernetes";next}1' > tmp/k8s.yaml
-	cat replicated.yaml tmp/k8s.yaml | deps/replicated release create --promote $(APPLIANCE_CHANNEL) --yaml -
+	cat replicated.yaml tmp/k8s.yaml | deps/replicated release create \
+		--yaml - \
+		--promote $(APPLIANCE_CHANNEL) \
+	        --version $(SHIP_SEMVER_SNAPSHOT) \
+	        --release-notes $(RELEASE_NOTES)
 
 release-ship: clean-assets lint-ship deps-vendor-cli
 	cat ship.yaml | deps/replicated release create \
-	    --promote $(SHIP_CHANNEL_ID) \
 	    --yaml - \
+	    --promote $(SHIP_CHANNEL) \
 	    --version $(SHIP_SEMVER_SNAPSHOT) \
 	    --release-notes $(RELEASE_NOTES)
 
