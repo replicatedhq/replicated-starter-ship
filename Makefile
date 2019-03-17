@@ -6,8 +6,7 @@ RELEASE_NOTES := "Automated release on $(shell date)"
 lint_reporter := console
 
 APPLIANCE_CHANNEL := Unstable
-
-SHIP_CHANNEL_ID := CHANGEME
+SHIP_CHANNEL_ID := Nightly
 
 # ship supports ignoring semver so we can probably remove this once that flag is added to CLI. This works fine for now
 SHIP_SEMVER_SNAPSHOT := 0.1.0-SNAPSHOT
@@ -29,8 +28,8 @@ deps-vendor-cli:
 	@if [[ -x deps/replicated ]]; then exit 0; else \
 	echo '-> Downloading Replicated CLI... '; \
 	mkdir -p deps/; \
-	if [[ "`uname`" == "Linux" ]]; then curl -fsSL https://github.com/replicatedhq/replicated/releases/download/v0.6.0/replicated_0.6.0_linux_amd64.tar.gz | tar xvz -C deps; exit 0; fi; \
-	if [[ "`uname`" == "Darwin" ]]; then curl -fsSL https://github.com/replicatedhq/replicated/releases/download/v0.6.0/replicated_0.6.0_darwin_amd64.tar.gz | tar xvz -C deps; exit 0; fi; fi;
+	if [[ "`uname`" == "Linux" ]]; then curl -fsSL https://github.com/replicatedhq/replicated/releases/download/v0.9.0/replicated_0.9.0_linux_amd64.tar.gz | tar xvz -C deps; exit 0; fi; \
+	if [[ "`uname`" == "Darwin" ]]; then curl -fsSL https://github.com/replicatedhq/replicated/releases/download/v0.9.0/replicated_0.9.0_darwin_amd64.tar.gz | tar xvz -C deps; exit 0; fi; fi;
 
 require_gsed:
 	@[ -z `which gsed` ] || echo "command not found: gsed" && exit 1
@@ -70,11 +69,10 @@ release-appliance: clean-assets lint-appliance deps-vendor-cli
 	cat replicated.yaml tmp/k8s.yaml | deps/replicated release create --promote $(APPLIANCE_CHANNEL) --yaml -
 
 release-ship: clean-assets lint-ship deps-vendor-cli
-	@deps/replicated shiprelease create \
-	    --vendor-token ${REPLICATED_API_TOKEN} \
-	    --channel-id $(SHIP_CHANNEL_ID) \
-	    --spec-file ./ship.yaml \
-	    --semver $(SHIP_SEMVER_SNAPSHOT) \
+	cat ship.yaml | deps/replicated release create \
+	    --promote $(SHIP_CHANNEL_ID) \
+	    --yaml - \
+	    --version $(SHIP_SEMVER_SNAPSHOT) \
 	    --release-notes $(RELEASE_NOTES)
 
 deploy-ship:
