@@ -5,7 +5,10 @@ REPO_PATH := $(shell pwd)
 RELEASE_NOTES := "Automated release on $(shell date)"
 lint_reporter := console
 
+APPLIANCE_APP_ID := CHANGEME
 APPLIANCE_CHANNEL := Unstable
+
+SHIP_APP_ID := CHANGEME
 SHIP_CHANNEL := Nightly
 
 # ship supports ignoring semver rules so we can probably remove this once that flag is added to CLI. This works fine for now
@@ -67,6 +70,7 @@ run-local-headless: clean-assets lint-ship
 release-appliance: clean-assets lint-appliance deps-vendor-cli
 	kustomize build overlays/appliance | awk '/---/{print;print "# kind: scheduler-kubernetes";next}1' > tmp/k8s.yaml
 	cat replicated.yaml tmp/k8s.yaml | deps/replicated release create \
+	        --app $(APPLIANCE_APP_ID) \
 		--yaml - \
 		--promote $(APPLIANCE_CHANNEL) \
 	        --version $(SHIP_SEMVER_SNAPSHOT) \
@@ -74,6 +78,7 @@ release-appliance: clean-assets lint-appliance deps-vendor-cli
 
 release-ship: clean-assets lint-ship deps-vendor-cli
 	cat ship.yaml | deps/replicated release create \
+	    --app $(SHIP_APP_ID) \
 	    --yaml - \
 	    --promote $(SHIP_CHANNEL) \
 	    --version $(SHIP_SEMVER_SNAPSHOT) \
