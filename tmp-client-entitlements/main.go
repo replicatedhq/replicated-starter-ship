@@ -24,6 +24,7 @@ func RootCmd() *cobra.Command {
 	}
 	cmd.AddCommand(CreateCommand())
 	cmd.AddCommand(SetValueCmd())
+	cmd.AddCommand(GetShipReleaseCommand())
 
 	return cmd
 }
