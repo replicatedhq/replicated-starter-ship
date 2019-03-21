@@ -80,19 +80,11 @@ release-appliance: clean-assets lint-appliance deps-vendor-cli
 	        --release-notes $(RELEASE_NOTES)
 
 release-ship: clean-assets lint-ship deps-vendor-cli
-<<<<<<< HEAD
 	cat ship.yaml | deps/replicated release create \
 	    --app $(SHIP_APP_ID) \
 	    --yaml - \
 	    --promote $(SHIP_CHANNEL) \
 	    --version $(SHIP_SEMVER_SNAPSHOT) \
-=======
-	deps/replicated shiprelease create \
-	    --vendor-token ${REPLICATED_API_TOKEN} \
-	    --channel-id $(SHIP_NIGHTLY_CHANNEL_ID) \
-	    --spec-file ./ship.yaml \
-	    --semver $(SHIP_SEMVER_SNAPSHOT) \
->>>>>>> add really brief entitlements example
 	    --release-notes $(RELEASE_NOTES)
 
 deploy-ship:
