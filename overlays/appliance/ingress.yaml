@@ -2,8 +2,8 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: echoheaders-ingress
+  name: example-ingress
 spec:
   backend:
-    serviceName: echoheaders
-    servicePort: 8080
+    serviceName: example-nginx
+    servicePort: 80

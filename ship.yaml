@@ -19,10 +19,6 @@ config:
     - name: nginx
       title: nginx settings
       items:
-      - name: nginx_replicas
-        title: Nginx Replicas
-        type: text
-        default: 3
       - name: nginx_memory
         title: Nginx Memory
         type: text
