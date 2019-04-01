@@ -28,18 +28,19 @@ config:
     test_proc:
       display_name: Check DNS
       command: resolve_host
+
 - name: server
   title: Server Config
   items:
-  - name: num_replicas
-    title: Number of instances to run
-    default: 1
-    type: text
-  - name: db_url
-    title: Database URL
-    type: text
-    required: true
-    default: postgres://pg.somebigbank.com/my_database?username=xxx&password=yyy
+    - name: db_url
+      title: Database URL
+      type: text
+      required: true
+      default: postgres://pg.somebigbank.com/my_database?username=xxx&password=yyy
+    - name: nginx_memory
+      title: Nginx Memory
+      type: text
+      default: 100Mi
 
 images:
 # this section needs to be included for airgap installs
