@@ -11,12 +11,12 @@ APPLIANCE_CHANNEL := Unstable
 SHIP_APP_ID := CHANGEME
 SHIP_CHANNEL := Nightly
 
-# ship supports ignoring semver rules so we can probably remove this once that flag is added to CLI. This works fine for now
-SHIP_SEMVER_SNAPSHOT := 0.1.0-dev
+VERSION_TAG := 0.1.0-dev
 
 # Replace this with your private or public ship repo in github
 REPO := replicatedhq/replicated-starter-ship
-# Optional -- replace with your app details
+
+# App name will be displayed in the ship console
 APP_NAME := "My Cool App"
 ICON := "https://vendor.replicated.com/011a5f1125bce80a8ced6fae0c409c91.png"
 
@@ -73,7 +73,7 @@ release-appliance: clean-assets lint-appliance deps-vendor-cli
 	        --app $(APPLIANCE_APP_ID) \
 		--yaml - \
 		--promote $(APPLIANCE_CHANNEL) \
-	        --version $(SHIP_SEMVER_SNAPSHOT) \
+	        --version $(VERSION_TAG) \
 	        --release-notes $(RELEASE_NOTES)
 
 release-ship: clean-assets lint-ship deps-vendor-cli
@@ -81,7 +81,7 @@ release-ship: clean-assets lint-ship deps-vendor-cli
 	    --app $(SHIP_APP_ID) \
 	    --yaml - \
 	    --promote $(SHIP_CHANNEL) \
-	    --version $(SHIP_SEMVER_SNAPSHOT) \
+	    --version $(VERSION_TAG) \
 	    --release-notes $(RELEASE_NOTES)
 
 deploy-ship:
