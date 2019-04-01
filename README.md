@@ -1,6 +1,6 @@
 Replicated Ship Starter
 ==================
-Starter project for managing a [Ship](https://ship.replicated.com) application in a GitHub repo.
+Starter project for managing a [Replicated Airgapped Kubernetes Appliance](https://help.replicated.com/guides/ship-with-kubernetes) or [Ship](https://ship.replicated.com) application in a GitHub repo.
 
 ### Prequisites
 
