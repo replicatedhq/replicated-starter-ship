@@ -68,6 +68,7 @@ run-local-headless: clean-assets lint-ship
 	@$(MAKE) print-generated-assets
 
 release-appliance: clean-assets lint-appliance deps-vendor-cli
+	mkdir -p tmp
 	kustomize build overlays/appliance | awk '/---/{print;print "# kind: scheduler-kubernetes";next}1' > tmp/k8s.yaml
 	cat replicated.yaml tmp/k8s.yaml | deps/replicated release create \
 	        --app $(APPLIANCE_APP_ID) \
