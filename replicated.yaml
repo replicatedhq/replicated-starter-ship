@@ -25,6 +25,7 @@ config:
     title: Hostname
     value: '{{repl ConsoleSetting "tls.hostname" }}'
     type: text
+    required: true
     test_proc:
       display_name: Check DNS
       command: resolve_host
