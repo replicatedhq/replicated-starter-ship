@@ -83,7 +83,6 @@ config:
       - name: spline_reticulator_api_key
         title: Spline Reticulator API Key
         help_text: Enter your spline reticulator API key
-        reccomended: true
         type: text
         default: abcdefg1234567890
 
