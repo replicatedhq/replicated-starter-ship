@@ -1,6 +1,6 @@
 .PHONY: install-ship run-local run-local-headless lint clean-assets print-generated-assets deploy deps
 SHIP := $(shell which ship)
-PATH := $(shell pwd)
+REPO_PATH := $(shell pwd)
 SHELL := /bin/bash -lo pipefail
 lint_reporter := console
 
@@ -24,9 +24,9 @@ lint: deps
 run-local: clean-assets lint
 	mkdir -p tmp && cd tmp && \
 	$(SHIP) app \
-	    --runbook $(PATH)/ship.yaml  \
-	    --set-github-contents $(REPO):/base:master:$(PATH) \
-	    --set-github-contents $(REPO):/scripts:master:$(PATH) \
+	    --runbook $(REPO_PATH)/ship.yaml  \
+	    --set-github-contents $(REPO):/base:master:$(REPO_PATH) \
+	    --set-github-contents $(REPO):/scripts:master:$(REPO_PATH) \
 	    --set-channel-icon $(ICON) \
 	    --set-channel-name $(APP_NAME) \
 	    --log-level=off
@@ -36,9 +36,9 @@ run-local: clean-assets lint
 run-local-headless: clean-assets lint
 	mkdir -p tmp && cd tmp && \
 	$(SHIP) app \
-	    --runbook $(PATH)/ship.yaml  \
-	    --set-github-contents $(REPO):/base:master:$(PATH) \
-	    --set-github-contents $(REPO):/scripts:master:$(PATH) \
+	    --runbook $(REPO_PATH)/ship.yaml  \
+	    --set-github-contents $(REPO):/base:master:$(REPO_PATH) \
+	    --set-github-contents $(REPO):/scripts:master:$(REPO_PATH) \
 	    --headless \
 	    --log-level=error
 	@$(MAKE) print-generated-assets
