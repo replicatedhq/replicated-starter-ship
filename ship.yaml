@@ -1,14 +1,14 @@
 assets:
   v1:
     - github:
-        repo: dexhorthy/replicated-starter-ship
+        repo: replicatedhq/replicated-starter-ship
         path: /base
         dest: ./
         proxy: true
         # can be a commit SHA or branch reference, but master is best for quick iteration
         ref: master
     - github:
-        repo: dexhorthy/replicated-starter-ship
+        repo: replicatedhq/replicated-starter-ship
         path: /scripts
         dest: ./
         # can be a commit SHA or branch reference, but master is best for quick iteration
