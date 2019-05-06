@@ -4,16 +4,14 @@ assets:
         repo: replicatedhq/replicated-starter-ship
         path: /base
         dest: ./
-        proxy: true
         # can be a commit SHA or branch reference, but master is best for quick iteration
-        ref: master
+        ref: terraform
     - github:
         repo: replicatedhq/replicated-starter-ship
         path: /scripts
         dest: ./
         # can be a commit SHA or branch reference, but master is best for quick iteration
-        ref: master
-        proxy: true
+        ref: terraform
 
     - inline:
         dest: tf/empty.tf
