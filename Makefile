@@ -1,6 +1,7 @@
 .PHONY: install-ship run-local run-local-headless lint clean-assets print-generated-assets deploy deps-lint
 SHIP := $(shell which ship)
 REPO_PATH := $(shell pwd)
+SHELL := /bin/bash
 
 RELEASE_NOTES := "Automated release by ${USER} on $(shell date)"
 lint_reporter := console
