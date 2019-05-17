@@ -4,7 +4,6 @@ assets:
         repo: replicatedhq/replicated-starter-ship
         path: /base
         dest: ./
-        source: private
         # can be a commit SHA or branch reference, but master is best for quick iteration
         ref: master
 
