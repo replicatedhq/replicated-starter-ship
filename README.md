@@ -23,17 +23,14 @@ This project contains an example application that can be deployed with ship. The
 
 ### Get started
 
-First, clone the repo and re-initialize it
+This repo is a [GitHub Template Repository](https://help.github.com/en/articles/creating-a-repository-from-a-template). You can create a private copy by using the "Use this Template" link in the repo:
 
-```
-export MY_APP_NAME=my-cool-app
+![Template Repo](https://help.github.com/assets/images/help/repository/use-this-template-button.png)
 
-git clone https://github.com/replicatedhq/replicated-starter-ship.git ${MY_APP_NAME}
-cd ${MY_APP_NAME}
-rm -rf .git
-git init
-git remote add origin <your git repo>
-```
+You should use the template to create a new **private** repo in your org, for example `mycompany/replicated` or `mycompany/replicated-starter-ship`.
+
+Once you've created a repository from the template, you'll want to `git clone` your new repo and `cd` into it locally.
+
 
 ### Hello, World!
 
