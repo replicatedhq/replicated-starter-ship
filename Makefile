@@ -6,11 +6,11 @@ SHELL := /bin/bash
 RELEASE_NOTES := "Automated release by ${USER} on $(shell date)"
 lint_reporter := console
 
-APPLIANCE_APP_ID := CHANGEME
-APPLIANCE_CHANNEL := Unstable
+APPLIANCE_APP_ID ?= CHANGEME
+APPLIANCE_CHANNEL ?= Unstable
 
-SHIP_APP_ID := CHANGEME
-SHIP_CHANNEL := Nightly
+SHIP_APP_ID ?= CHANGEME
+SHIP_CHANNEL ?= Nightly
 
 VERSION_TAG := "0.1.0-dev-${USER}"
 
