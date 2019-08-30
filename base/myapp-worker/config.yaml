@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-config
+  namespace: '{{repl ConfigOption "namespace"}}'
+data:
+    SPLINE_RETICULATOR_API_KEY: {{repl ConfigOption "spline_reticulator_api_key" }}
+    SOME_OTHER_ENV_VAR: "fake"
