@@ -26,11 +26,11 @@ base
 │   └── service.yaml
 ├── postgres-authdb
 │   ├── kustomization.yaml     # references single rendered.yaml, sets namespace to "authdb"
-│   └── rendered.yaml
+│   └── rendered.yaml          # managed by Ship Cloud or kotsadm
 ├── postgres-main
 │   ├── kustomization.yaml     # references single rendered.yaml, sets namespace to "maindb"
-│   └── rendered.yaml
+│   └── rendered.yaml          # managed by Ship Cloud or kotsadm
 └── redis
     ├── kustomization.yaml     # references single rendered.yaml, sets namespace to "redis"
-    └── rendered.yaml
+    └── rendered.yaml          # managed by Ship Cloud or kotsadm
 ```

@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: example-nginx
-  namespace: '{{repl ConfigOption "namespace"}}'
   labels:
     app: example
     component: nginx
@@ -19,7 +18,6 @@ spec:
         app: example
         component: nginx
     spec:
-      imagePullSecrets: {{repl if (ConfigOptionEquals "airgap" "0")}}[]{{repl else if (ConfigOptionEquals "airgap_registry_pull_method" "airgap_registry_pull_method_noauth")}}[]{{repl else if (ConfigOptionEquals "airgap_registry_pull_method" "airgap_registry_pull_method_needcreds")}}[{"name": "imagepull-generated"}]{{repl else if (ConfigOptionEquals "airgap_registry_pull_method" "airgap_registry_pull_method_imagepullsecret")}}[{"name": "{{repl ConfigOption "airgap_registry_pull_secret"}}"}]{{repl end }}
       containers:
         - name: nginx
           image: '{{repl if (ConfigOptionEquals "airgap" "0")}}nginx:1.15.12-alpine{{repl else }}{{repl ConfigOption "airgap_registry_address"}}/nginx:1.15.12-alpine{{repl end}}'
