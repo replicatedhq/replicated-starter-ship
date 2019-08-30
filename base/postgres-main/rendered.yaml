@@ -1,0 +1,167 @@
+# This file managed by ship
+---
+apiVersion: v1
+data:
+  postgresql-password: cjNXS2tQSG1DNg==
+kind: Secret
+metadata:
+  labels:
+    app: postgresql
+    release: postgresql
+  name: postgresql
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: postgresql
+    release: postgresql
+  name: postgresql-headless
+spec:
+  clusterIP: None
+  ports:
+    - name: postgresql
+      port: 5432
+      targetPort: postgresql
+  selector:
+    app: postgresql
+    release: postgresql
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: postgresql
+    release: postgresql
+  name: postgresql
+spec:
+  ports:
+    - name: postgresql
+      port: 5432
+      targetPort: postgresql
+  selector:
+    app: postgresql
+    release: postgresql
+    role: master
+  type: ClusterIP
+---
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  labels:
+    app: postgresql
+    release: postgresql
+  name: postgresql-postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+      release: postgresql
+      role: master
+  serviceName: postgresql-headless
+  template:
+    metadata:
+      labels:
+        app: postgresql
+        chart: postgresql-6.3.2
+        heritage: Tiller
+        release: postgresql
+        role: master
+      name: postgresql
+    spec:
+      containers:
+        - env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: POSTGRESQL_PORT_NUMBER
+              value: "5432"
+            - name: POSTGRESQL_VOLUME_DIR
+              value: /bitnami/postgresql
+            - name: PGDATA
+              value: /bitnami/postgresql/data
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: postgresql-password
+                  name: postgresql
+          image: docker.io/bitnami/postgresql:11.5.0-debian-9-r1
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          name: postgresql
+          ports:
+            - containerPort: 5432
+              name: postgresql
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - |
+                  pg_isready -U "postgres" -h 127.0.0.1 -p 5432
+                  [ -f /opt/bitnami/postgresql/tmp/.initialized ]
+            failureThreshold: 6
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          securityContext:
+            runAsUser: 1001
+          volumeMounts:
+            - mountPath: /bitnami/postgresql
+              name: data
+              subPath: null
+      initContainers:
+        - command:
+            - sh
+            - -c
+            - |
+              mkdir -p /bitnami/postgresql/data
+              chmod 700 /bitnami/postgresql/data
+              find /bitnami/postgresql -mindepth 1 -maxdepth 1 -not -name ".snapshot" -not -name "lost+found" | \
+                xargs chown -R 1001:1001
+          image: docker.io/bitnami/minideb:latest
+          imagePullPolicy: Always
+          name: init-chmod-data
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: /bitnami/postgresql
+              name: data
+              subPath: null
+      securityContext:
+        fsGroup: 1001
+      volumes: []
+  updateStrategy:
+    type: RollingUpdate
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
